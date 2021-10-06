@@ -167,6 +167,7 @@ resource "aws_route_table" "internal" {
 
 resource "aws_route" "nat" {
   count          = length(var.internal_subnets)
+  destination_cidr_block = "0.0.0.0/0"
   route_table_id = aws_route_table.internal[count.index].id
   nat_gateway_id = aws_nat_gateway.main[count.index % length(var.external_subnets)].id
 }
