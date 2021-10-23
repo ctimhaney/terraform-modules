@@ -30,15 +30,28 @@ variable "key_name" {
 }
 variable "vpc_asg_subnets" {
   description = "List of Subnet IDs where the autoscaling group will deploy compute resources"
-  type = list(string)
+  type        = list(string)
 }
 
 variable "vpc_lb_subnets" {
   description = "Subnet IDs where the LB will reside"
   type        = list(string)
 }
- variable "iam_instance_profile_name" {
-   default = ""
-   description = "The name of the iam instance profile to attach to instances"
-   type = string
- }
+
+variable "iam_instance_profile_name" {
+  default     = ""
+  description = "The name of the iam instance profile to attach to instances"
+  type        = string
+}
+
+# todo just make bastion specific?
+variable "source_security_groups" {
+  default = []
+  type = list(object({
+    id = string,
+    from_port = string,
+    to_port = string,
+    protocol = string
+  }))
+  description = "A list of source security group IDs to authorize ingress"
+}

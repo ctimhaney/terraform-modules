@@ -1,6 +1,6 @@
 resource "aws_kms_key" "ssm" {
-  description = "KMS necryption key for SSM data"
-  key_usage = "ENCRYPT_DECRYPT"
+  description = "KMS encryption key for SSM data"
+  key_usage   = "ENCRYPT_DECRYPT"
   # policy?
   tags = {
     Name = "${var.prefix} SSM KMS KEY"
@@ -10,32 +10,32 @@ resource "aws_kms_key" "ssm" {
 resource "aws_iam_policy" "ssm" {
   description = "Allow SSM access"
   policy = jsonencode({
-    "Version": "2012-10-17",
-    "Statement": [
+    "Version" : "2012-10-17",
+    "Statement" : [
       {
-        "Effect": "Allow",
-        "Action": [
+        "Effect" : "Allow",
+        "Action" : [
           "ssm:UpdateInstanceInformation",
           "ssmmessages:CreateControlChannel",
           "ssmmessages:CreateDataChannel",
           "ssmmessages:OpenControlChannel",
           "ssmmessages:OpenDataChannel"
         ],
-        "Resource": "*"
+        "Resource" : "*"
       },
       {
-        "Effect": "Allow",
-        "Action": [
+        "Effect" : "Allow",
+        "Action" : [
           "s3:GetEncryptionConfiguration"
         ],
-        "Resource": "*"
+        "Resource" : "*"
       },
       {
-        "Effect": "Allow",
-        "Action": [
+        "Effect" : "Allow",
+        "Action" : [
           "kms:Decrypt"
         ],
-        "Resource": "${aws_kms_key.ssm.arn}"
+        "Resource" : "${aws_kms_key.ssm.arn}"
       }
     ]
   })
